@@ -1,0 +1,529 @@
+DICHIARARE UNA VARIABILE
+
+metodo normale:
+var x int/string/[]int/map [string]int/rune/byte
+
+short assignment:
+x:= 9
+
+creazione + assegnamento valore:
+var x int = 9
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+TIPI DI BASE
+int, float(32 o 64), string, bool, byte, rune, map, slice, array, puntatori
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+OPERATORI LOGICI E DI SEGNO
+&& (and):dove entrambre le condizioni devono essere vere
+|| (or): dove anche solo con una condizione vera il ciclo viene eseguito
+!= (diverso): una variabile è diversa da un altra/numero
+== (uguale): una variabile è uguale ad un altra/numero (NB. == è usato nelle condizioni, = è usato negli assegnamenti e nelle operazioni)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+IF
+
+if "condizione"{
+  istruzioni
+} else if "condizione"{
+  istruzioni
+}else{
+  istruzioni
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+FOR
+
+for unario:
+
+for "condizione unica"{
+  istruzioni
+}
+
+for zerario (infinito):
+
+for{
+  istruzioni
+}
+
+Per uscire da questo tipo di for dovremo utilizzare l'istruzione BREAK, solitamente utilizzato all'interno di strutture
+come l'if oppure tramite EOF (end of file)
+
+for{
+  _, err:= fmt.Scan(&n)
+  if err!=nil{
+    break
+  }
+}
+
+for ternario:
+      a     b    c
+for i:=0; i>0; i++{
+  istruzioni (d)
+}
+
+le istruzioni vengono eseguite nell'ordine A, B, D, C
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+FOR RANGE
+il for range è un'alternativa al for ternario
+
+
+1. for range nelle stringhe
+
+for i, x:= range word{
+  fmt.Println(string(x), i)
+}
+
+In questo caso la i funziona come da contatore, e la x prende una runa alla volta nella parola, questo è utilizzato per
+ovviare al problema dei caratteri speciali (è,ò,à,ù,ecc) che sono formati da più byte e quindi se usassimo il for normale
+ci sarebbero delle stampe non corrette, il contatore però stamperà comunque il numero di byte all'interno della parola.
+
+2. for range nelle slice
+
+for _, x := range contenitore{ //il primo for serve per scansionare la slice
+  for _, j:= range x{ //il secondo for serve per scansionare ogni singolo valore della slice
+    fmt.Println(string(j)) //il secondo for funziona come quello spiegato per le stringhe
+  }
+}
+
+3.for range nelle mappe
+
+//parole stampate in modo disordinato
+for a, x:= range pippo{
+  fmt.Println(x, a)
+}
+
+in questo caso a è la chiave, x invece è il valore, pippo è la mappa
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SWITCH (non Nintendo)
+
+switch condizione{
+  case "espressione1": espressione
+
+  case "espressione2": espressione
+
+  case "espressione3": espressione
+
+  default: espressione
+
+}
+
+es.
+var n, b int
+fmt.Scan(&n, &b)
+c := n + b
+switch c {
+  case 1:
+    c= 2
+  case 2:
+    c = 700
+  default:
+    c = 0
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+CREAZIONE FUNZIONE FUORI DAL MAIN
+è un modo per far si di non ripetere porzioni di codice più volte all'interno dello stesso programma.
+
+func "nome_func" (parametri in ingresso)valori restituiti{
+  ...
+  ...
+  return "valore"
+}
+
+chiamata nel main:
+
+x:= "nome_func"(parametri da inviare)
+
+NB. i parametri nella chiamata possono anche avere nomi diversi da quelli che si trovano nella funzione
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+TYPE
+type è simile a var
+Var serve a dichiarare una variabile di un certo tipo.
+Type significherà un puntatore int.
+
+sintassi:
+type "variabile" "tipo"
+
+es.
+func main() {
+    type x *int
+    type p *int //definizione di tipo
+    var y, z p
+    var a int
+    a = 5
+    y = &a
+    z = y
+    *y = *z + 3
+    fmt.Println(a)
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+STRUCT
+
+type "nome" struct{
+  "var1", "var2", "var3" int
+  "var4" string
+  ...
+}
+
+es.
+type data struct {
+    g, m, a int
+}
+
+
+metodi per modificare i campi di una STRUCT
+
+es.
+var s1, s2 studente
+    s1.nome="Paolo"
+    s1.cognome="Boldi"
+    s1.dataNascita.g=29
+    s1.dataNascita.m=11
+    s1.dataNascita.a=1968
+    s1.matricola="352372"
+}
+
+Altri metodi per assegnare i valori nei campi delle variabili (LETTERALI STRUCT)
+
+
+d1=data{29,11,1968}
+s1=studente{"mario", "rossi", data{3,11,1995}, "374956"}
+
+Nella data dello studente si potrebbe anche usare una variabile assegnata in precedenza
+
+s1=studente{"mario", "rossi", d1, "374956"}
+
+
+Ci sono anche dei formati dove non si è obbligati a inserire tutti i campi:
+
+s2=studente{nome:"mario", dataNascita: data{3,8,1876}}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+STRINGHE
+Sulle stringhe si possono fare numerose operazioni
+
+1. prendere solo 1 lettera
+
+s:="ciao"
+s[2]="a" (NB. i conteggi per le posizioni partono sempre da 0)
+
+2. operazioni di comparazione
+
+S1==s2
+S1!=s2
+S1>=s2 (ordine alfabetico)
+S1<=s2 (ordine alfabetico)
+
+Il risultato di queste è un booleano
+
+3.sottostringhe
+
+s[ i : j ]
+i indice incluso, j indice escluso
+Es.
+Var s,t string
+s="Paolo"
+t=[ 2 , 4 ]
+Risultato = ol
+
+4. Fmt.Printf (Print formatted)
+
+Fmt.Printf(stringa di formato, %_)
+
+%d = interi
+%f = floating point
+%c = caratteri
+%s = stringhe
+%b = intero in base 2
+
+Es.
+%.2f = stampa con 2 cifre dopo la virgola
+
+5. pacchetti utili da importare
+
+"strings"
+"unicode"
+
+per vedere tutte le loro funzioni digitare nel terminale "go doc strings" o "go doc unicode"
+per vedere una delle loro funzioni "go doc strings."funzione""
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+STRCONV
+
+È un pacchetto, le funzioni più importanti sono:
+	- Atoi, trasforma le stringhe in interi, se nella stringa ci sono delle lettere, tutto il resto della stringa oltre ai numeri sono error
+	x, err := strconv.Atoi("537") ---> non da nessun errore perché non ci sono lettere
+	- Itoa, è il contrario di atoi, quindi da intero a stringa, quindi non ci sono errori nella conversione
+	- ParseInt, dopo l'inserimento di una stringa, converte la stringa in un numero in base 2,3,4,5,ecc. mettendo anche il tipo con cui esce la variabile. Restituisce sempre un int64 oppure error
+	Es. x, err:= strconv.ParseInt(s, 2, 64)
+
+queste funzioni devono essere associate a err, oppure ok:
+
+,ok ---> utilizzato per vedere se vera una condizione (restituisce un bool) VERO
+
+, err ---> utilizzato per vedere se vera una condizione (restituisce un nil se va bene o l'errore se va male) FALSO
+
+
+es. x, err= strconv.Atoi(s)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+RANDOM
+
+La libreria per i numeri casuali è "math/rand" e "time"
+
+
+rand.Seed(seme) // il seed è un int64
+.
+.
+.
+rand.Intn(x) //genera e restituisce un numero intero fra 0 e x-1
+
+
+rand.Seed(time.Now().UnixNano())
+
+È meglio utilizzare UnixNano in quanto se un utente è abbastanza veloce con Unix, il programma potrebbe restituire lo stesso risultato.
+UnixNano prende i nanosecondi, Unix prende in considerazione i secondi.
+
+//stampa n numeri casuali in base a quanti ne vuole l'utente
+func main(){
+    var n int
+    fmt.Println("inserisci quanti numeri casuali stampare")
+    fmt.Scan(&n)
+    rand.Seed(time.Now().UnixNano())
+    for i:=0; i<n; i++{
+        x:=rand.Intn(100)
+        fmt.Printf("%d\t", x)
+    }
+    fmt.Println()
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+RICORSIONE
+
+La ricorsione è un modo alternativo all'utilizzo del ciclo for.
+
+La ricorsione ha effetto nelle funzioni fuori dal main, ovvero quando nel return si inserisce la chiamata della funzione stessa.
+questo ciclo terminerà quando si userà un return senza chiamate di funzione.
+
+es. fattoriale ricorsivo
+
+func fattoriale (n int)int{
+  //caso base
+  if n==0{
+    return 1
+  }
+  //caso ricorsivo
+  return n*fattoriale(n-1)
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+ARRAY
+
+sintassi:
+var x [n]string
+
+Al contrario delle Slice, un array deve essere inizializzato con una "misura" quindi avrà un massimo di n valori, se non si inserisce niente
+l'array avrà solo zeri. Se l'array è pieno e si deve inserire qualcosa d'altro, l'unico modo è creare un'altro array più grande e copiare tutto
+il contenuto dell'array pieno in quello nuovo, e poi aggiungere i nuovi dati.
+
+
+LETTERALI DI TIPO ARRAY
+
+X:=[8]int{1,2,3,4,5}
+//in questo caso crea un array x di 8 elementi e verrà inizializzato con questi valor, i valori vuoti saranno inizializzati con zero
+
+x:=[...]int{1,2,3,4,5}
+//con i tre punti deduco di quanti elementi è formato l'array in base ai suoi elementi assegnati
+
+x:=[10]int{0:3, 7:5} //cambia la variabile nella posizione n (posizione:variabile da inserire)
+[3, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0]
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+SLICE
+
+sintassi:
+var x []string
+
+Sono simili a degli array, ma hanno la particolarità che non hanno bisogno di "misure", quindi potenzialmente potrebbe avere infinite variabili all'interno
+di esso. Bisogna dividere il concetto di lunghezza e di capacità di una slice. La lunghezza è il numero di valori inseriti all'interno della slice.
+La capacità è quanti valori potrebbe contenere la slice, questo valore è continuamente aggiornato mano a mano che la slice si riempie.
+
+CREAZIONE DI UNA SLICE
+	1. Con dei letterali di tipo slice
+
+	x=[]int{1,2,3,4,5}
+
+	2. Funzione make
+
+	x=make([]int, 10)
+	//Ha come argomento il tipo di slice da creare e la sua lunghezza
+
+  ALLUNGAMENTO DI UNA SLICE
+
+  x=append(x, 10)
+
+  X slice da allungare
+  10 nuovo elemento della slice
+
+
+SUBSLICING DI ARRAY
+È un operazione dove partendo da un array/slice si crea una slice
+
+Sintassi:
+slice/array[indice iniziale: indice finale]
+             compreso           escluso
+
+es.
+var a [10]int //dichiarazione array
+a=[...]int {3,7,9,11,15,20,11,7,9,11} //riempimento dell'array
+var s []int //dichiarazione della slice
+s=a[3:8] //i valori che ha s vanno dal valore 3 al 7 (8 escluso)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+MAPPE
+
+sintassi:
+var x map[chiave]tipo_valore
+
+es. var x map[string]int
+[alessandro:1,2,3 , edoardo:4,5,6 , coscio: 7,8,9]
+
+NB. nelle mappe è obbligatorio zio usare la make
+
+m=make(map[string]int)
+
+Operazioni sulle mappe
+	1. m[x]=y  --> associa alla chiave x il valore y
+	2. m[x] --> valore associato a x (oppure 0 se la chiave non è presente)
+	3. v, ok := m[x] --> se e solo se x è una chiave
+	4. len(m) --> numero di chiavi
+	5. For k,v:=range m{
+		… //scandisce m per tutte le coppie (k,v)
+	}
+	6. delete(m,x) --> cancella la chiave x dalla mappa m
+	7. Letterali --> map[string]int{"Paolo":15, "Giovanni":7}
+                   m["Marco"]=3
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+INPUT DA LINEA DI COMANDO E BUFIO
+
+1. se si vuole inserire solo dei valori tipo:
+
+go run somma.go 8 6 //farà la somma con questi due valori
+
+in questo caso nel main non ci saranno scan, ma solo degli assegnamenti di varibili.
+Per fare questa operazione ci servirà il pacchetto "os" e in particolare la funzione os.Args
+
+es.
+
+var x int
+x=os.Args[1] //ricordarsi che in os.Args si parte sempre da 1
+
+2. se si importa un file con un testo al suo interno
+
+es.
+var x []string
+scanner:=bufio.NewScanner(os.Stdin) //salva dentro la variabile il testo del file inserito
+
+//scanner.Split(bufio.ScanRunes) questa linea è superflua in quanto serve per dividere le rune all'interno della riga
+
+for scanner.Scan(){ // la funzione Scan scannerizza ogni riga/parola/runa
+  x=append(x, scanner.Text()) // la funzione Text prende la parte scannerizzata e la aggiunge alla slice x
+}
+fmt.Println(x)
+
+
+In questo codice la variabile scanner può assumere qualunque nome, però il nome deve essere utilizzato per le funzioni .Scan, .Text, .Split
+
+
+3. se si vuole inserire n righe all'interno del main, quindi con standard input.
+
+er esempio.
+
+scanner := bufio.NewScanner(os.Stdin)
+fmt.Println("Inserisci la matrice:")
+for r := 0; r < n; r++ {
+  scanner.Scan()
+  riga := scanner.Text()
+  matrice[r] = strings.Split(riga, " ")
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+I PUNTATORI
+
+i puntatori sono una merda e non servono a niente
+change my mind bitch
+
+sintassi:
+var x int
+var p *int //per dichiararli
+*p=7 //per assegnarli un valore
+p=&x //p diventa puntatore di x
+
+New
+
+New(T) --> alloca spazio per t e restituisce l'indirizzo sottoforma di puntatore
+
+func main(){
+    var p *int64
+    p=new(int64) //il pc trova un allocazione di memoria dove salvare il valore di p (7)
+    *p=7
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+I METODI
+sostanzialmente i metodi sono delle funzioni che vanno applicate sopra delle strutture, infatti la sintassi è:
+
+func (s Student) getAge() int{
+
+}
+
+quindi:
+
+func (*nome variabile struct*) *nome funzione*() *tipo valore restituito*
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+inserimento file attraverso os.Args
+
+
+if len(os.Args)<2{
+  fmt.Println("nome del file?")
+  os.Exit(1)
+}
+
+f, err:=os.Open(os.Args[1])
+if err!=nil{
+  fmt.Println("File non trovato")
+  os.Exit(2)
+}
+
+scanner:=bufio.NewScanner(f)
+for scanner.Scan(){
+  riga:=scanner.Text()
+}
